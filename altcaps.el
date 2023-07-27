@@ -118,8 +118,8 @@ for a code sample):
     iLLiCiT iLLiBeRaL siLLiNeSs
 
 You do want to communicate mockery or sarcasm, though legibility
-still matters!  (Though I encourage everyone to use a decent font
-that disambiguates characters.)"
+still matters!  (Regardless, I encourage everyone to use a decent
+font that disambiguates characters.)"
   :type '(alist
           :key-type (character :tag "Single character")
           :value-type (radio :tag "Letter casing"
@@ -127,8 +127,8 @@ that disambiguates characters.)"
                              (const :tag "Upper case" upcase)))
   :group 'altcaps)
 
-(defun altcaps--transform (string)
-  "Make STRING use alternating letter casing."
+(defun altcaps-transform (string)
+  "Make STRING use alternating letter casing, ignoring blanks."
   (let ((s (vconcat (downcase string)))
         casing
         chars)
@@ -149,12 +149,12 @@ that disambiguates characters.)"
     (concat (reverse chars))))
 
 (defun altcaps-replace (string &optional start)
-  "Convert STRING n buffer to alternating letter casing.
+  "Convert STRING in buffer to alternating letter casing.
 With optional START, use it as a buffer position whence to make
 the replacement."
   (when start (goto-char start))
   (when (search-forward string nil t)
-    (replace-match (altcaps--transform string) t)))
+    (replace-match (altcaps-transform string) t)))
 
 ;;;###autoload
 (defun altcaps-word (&optional num)
