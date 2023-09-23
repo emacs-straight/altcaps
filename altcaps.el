@@ -3,10 +3,10 @@
 ;; Copyright (C) 2022-2023  Free Software Foundation, Inc.
 
 ;; Author: Protesilaos Stavrou <info@protesilaos.com>
-;; Maintainer: Altcaps Development <~protesilaos/altcaps@lists.sr.ht>
+;; Maintainer: Altcaps Development <~protesilaos/general-issues@lists.sr.ht>
 ;; URL: https://git.sr.ht/~protesilaos/altcaps
-;; Mailing-List: https://lists.sr.ht/~protesilaos/altcaps
-;; Version: 1.1.0
+;; Mailing-List: https://lists.sr.ht/~protesilaos/general-issues
+;; Version: 1.2.0
 ;; Package-Requires: ((emacs "27.1"))
 
 ;; This file is NOT part of GNU Emacs.
@@ -58,9 +58,9 @@
 ;;
 ;; The user option `altcaps-force-character-casing' forces the given
 ;; letter casing for specified characters.  Its value is an alist of
-;; (CHARACTER . CASE) pairs.  CHARACTER is a single character
-;; (satisfies the `characterp' condition), while CASE is the `upcase'
-;; or `downcase' symbol (code sample further below).
+;; (STRING . CASE) pairs.  STRING is a single character string, while
+;; CASE is the `upcase' or `downcase' symbol (code sample further
+;; below).
 ;;
 ;; The idea is to always render certain characters in lower or upper
 ;; case, in consideration of their legibility in context.  For
@@ -76,8 +76,8 @@
 ;; The code to do this:
 ;;
 ;;     (setq altcaps-force-character-casing
-;;           '((?i . downcase)
-;;             (?l . upcase)))
+;;           '(("i" . downcase)
+;;             ("l" . upcase)))
 ;;
 ;; Backronyms of ALTCAPS: Alternating Letters Transform Casual Asides
 ;; to Playful Statements.  ALTCAPS Lets Trolls Convert Aphorisms to
@@ -101,9 +101,9 @@ communication.  Plus, you appear more sophisticated.  tRuSt Me."
   :group 'editing)
 
 (defcustom altcaps-force-character-casing nil
-  "Force the given letter casing for specified characters.
-This is an alist of (CHARACTER . CASE).  CHARACTER must satisfy
-`characterp', while CASE is the symbol `upcase' or `downcase'.
+  "Force the given letter casing for specified single character strings.
+This is an alist of (STRING . CASE).  STRING must satisfy
+`stringp', while CASE is the symbol `upcase' or `downcase'.
 
 The idea is to always render certain characters in lower or upper
 case, in consideration of their legibility in context.  For
@@ -121,21 +121,24 @@ You do want to communicate mockery or sarcasm, though legibility
 still matters!  (Regardless, I encourage everyone to use a decent
 font that disambiguates characters.)"
   :type '(alist
-          :key-type (character :tag "Single character")
+          :key-type (string :tag "Single character string")
           :value-type (radio :tag "Letter casing"
                              (const :tag "Lower case" downcase)
                              (const :tag "Upper case" upcase)))
+  :package-version '(altcaps . "1.2.0")
   :group 'altcaps)
 
 (defun altcaps-transform (string)
-  "Make STRING use alternating letter casing, ignoring blanks."
-  (let ((s (vconcat (downcase string)))
+  "Make STRING use alternating letter casing, ignoring blanks.
+Respect the preferred casing for characters in the user option
+`altcaps-force-character-casing'."
+  (let ((s (split-string (downcase string) ""))
         casing
         chars)
     (mapc (lambda (c)
-            (when (string-match-p "[[:alpha:]]" (char-to-string c))
+            (when (string-match-p "[[:alpha:]]" c)
               (cond
-               ((when-let ((force-case (alist-get c altcaps-force-character-casing)))
+               ((when-let ((force-case (alist-get c altcaps-force-character-casing nil nil #'equal)))
                   (setq c (funcall force-case c)
                         casing force-case)))
                ((eq casing 'downcase)
@@ -146,15 +149,16 @@ font that disambiguates characters.)"
                       casing 'downcase))))
             (push c chars))
           s)
-    (concat (reverse chars))))
+    (apply #'concat (nreverse chars))))
 
-(defun altcaps-replace (string &optional start)
-  "Convert STRING in buffer to alternating letter casing.
-With optional START, use it as a buffer position whence to make
-the replacement."
-  (when start (goto-char start))
-  (when (search-forward string nil t)
-    (replace-match (altcaps-transform string) t)))
+(defun altcaps-replace-region (beginning end string)
+  "Replace region between BEGINNING and END with STRING.
+STRING is processed with `altcaps-transform'."
+  (goto-char beginning)
+  (delete-region beginning end)
+  (insert (altcaps-transform string)))
+
+(make-obsolete 'altcaps-replace 'altcaps-replace-region "1.2.0")
 
 ;;;###autoload
 (defun altcaps-word (&optional num)
@@ -163,19 +167,22 @@ the replacement."
 With optional NUM as a numeric prefix argument, operate on NUM
 words forward, defaulting to 1.  If NUM is negative, do so
 backward.  When NUM is a negative prefix without a number, it is
-interpreted -1.
+interpreted as -1.
 
 Alternating letter casing denotes sarcasm or mockery."
   (interactive "P")
   (let* ((n (cond
-              ((integerp num) num)
-              ((eq num '-) -1)
-              (t 1)))
+             ((integerp num) num)
+             ((eq num '-) -1)
+             (t 1)))
+         (beginning (point))
          (end (save-excursion (forward-word n) (point)))
-         (word (buffer-substring-no-properties (point) end))
-         (start (when (< end (point)) end)))
-    (unless (string-blank-p word)
-      (altcaps-replace word start))))
+         (original-word (buffer-substring-no-properties beginning end)))
+    (unless (string-blank-p original-word)
+      (altcaps-replace-region
+       (min beginning end)
+       (max beginning end)
+       original-word))))
 
 ;;;###autoload
 (defun altcaps-region (beg end)
@@ -186,7 +193,7 @@ boundaries, else the space between `mark' and `point'.
 
 Alternating letter casing denotes sarcasm or mockery."
   (interactive "r")
-  (altcaps-replace (buffer-substring-no-properties beg end) beg))
+  (altcaps-replace-region beg end (buffer-substring-no-properties beg end)))
 
 ;;;###autoload
 (defun altcaps-dwim (&optional num)
