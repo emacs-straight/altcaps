@@ -1,6 +1,6 @@
 ;;; altcaps.el --- Apply alternating letter casing to convey sarcasm or mockery -*- lexical-binding: t -*-
 
-;; Copyright (C) 2022-2024  Free Software Foundation, Inc.
+;; Copyright (C) 2022-2025  Free Software Foundation, Inc.
 
 ;; Author: Protesilaos Stavrou <info@protesilaos.com>
 ;; Maintainer: Protesilaos Stavrou <info@protesilaos.com>
@@ -131,24 +131,26 @@ font that disambiguates characters.)"
   "Make STRING use alternating letter casing, ignoring blanks.
 Respect the preferred casing for characters in the user option
 `altcaps-force-character-casing'."
-  (let ((s (split-string (downcase string) ""))
-        casing
-        chars)
-    (mapc (lambda (c)
-            (when (string-match-p "[[:alpha:]]" c)
-              (cond
-               ((when-let* ((force-case (alist-get c altcaps-force-character-casing nil nil #'equal)))
-                  (setq c (funcall force-case c)
-                        casing force-case)))
-               ((eq casing 'downcase)
-                (setq c (upcase c)
-                      casing 'upcase))
-               (t
-                (setq c (downcase c)
-                      casing 'downcase))))
-            (push c chars))
-          s)
-    (apply #'concat (nreverse chars))))
+  (let ((characters (split-string (downcase string) ""))
+        (casing nil)
+        (processed-characters nil))
+    (dolist (character characters)
+      (let ((alpha-p (string-match-p "[[:alpha:]]" character)))
+        (cond
+         ((when-let* (alpha-p
+                      (force-case (alist-get character altcaps-force-character-casing nil nil #'equal)))
+            (setq character (funcall force-case character)
+                  casing force-case)))
+         ((and alpha-p (eq casing 'downcase))
+          (setq character (upcase character)
+                casing 'upcase))
+         (alpha-p
+          (setq character (downcase character)
+                casing 'downcase))
+         (t
+          (setq casing nil)))
+        (push character processed-characters)))
+    (apply #'concat (nreverse processed-characters))))
 
 (defun altcaps-replace-region (beginning end string)
   "Replace region between BEGINNING and END with STRING.
@@ -178,10 +180,7 @@ Alternating letter casing denotes sarcasm or mockery."
          (end (save-excursion (forward-word n) (point)))
          (original-word (buffer-substring-no-properties beginning end)))
     (unless (string-blank-p original-word)
-      (altcaps-replace-region
-       (min beginning end)
-       (max beginning end)
-       original-word))))
+      (altcaps-replace-region (min beginning end) (max beginning end) original-word))))
 
 ;;;###autoload
 (defun altcaps-region (beg end)
