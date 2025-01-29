@@ -5,7 +5,7 @@
 ;; Author: Protesilaos Stavrou <info@protesilaos.com>
 ;; Maintainer: Protesilaos Stavrou <info@protesilaos.com>
 ;; URL: https://github.com/protesilaos/altcaps
-;; Version: 1.2.0
+;; Version: 1.3.0
 ;; Package-Requires: ((emacs "27.1"))
 
 ;; This file is NOT part of GNU Emacs.
@@ -135,21 +135,18 @@ Respect the preferred casing for characters in the user option
         (casing nil)
         (processed-characters nil))
     (dolist (character characters)
-      (let ((alpha-p (string-match-p "[[:alpha:]]" character)))
+      (when (string-match-p "[[:alpha:]]" character)
         (cond
-         ((when-let* (alpha-p
-                      (force-case (alist-get character altcaps-force-character-casing nil nil #'equal)))
+         ((when-let* ((force-case (alist-get character altcaps-force-character-casing nil nil #'equal)))
             (setq character (funcall force-case character)
                   casing force-case)))
-         ((and alpha-p (eq casing 'downcase))
+         ((eq casing 'downcase)
           (setq character (upcase character)
                 casing 'upcase))
-         (alpha-p
-          (setq character (downcase character)
-                casing 'downcase))
          (t
-          (setq casing nil)))
-        (push character processed-characters)))
+          (setq character (downcase character)
+                casing 'downcase))))
+        (push character processed-characters))
     (apply #'concat (nreverse processed-characters))))
 
 (defun altcaps-replace-region (beginning end string)
@@ -167,17 +164,12 @@ STRING is processed with `altcaps-transform'."
 
 With optional NUM as a numeric prefix argument, operate on NUM
 words forward, defaulting to 1.  If NUM is negative, do so
-backward.  When NUM is a negative prefix without a number, it is
-interpreted as -1.
+backward.
 
 Alternating letter casing denotes sarcasm or mockery."
-  (interactive "P")
-  (let* ((n (cond
-             ((integerp num) num)
-             ((eq num '-) -1)
-             (t 1)))
-         (beginning (point))
-         (end (save-excursion (forward-word n) (point)))
+  (interactive "p")
+  (let* ((beginning (point))
+         (end (save-excursion (forward-word num) (point)))
          (original-word (buffer-substring-no-properties beginning end)))
     (unless (string-blank-p original-word)
       (altcaps-replace-region (min beginning end) (max beginning end) original-word))))
@@ -201,8 +193,8 @@ invoke `altcaps-word' with optional NUM, per that
 command's functionality (read its doc string).
 
 Alternating letter casing denotes sarcasm or mockery."
-  (interactive "P")
-  (if (use-region-p)
+  (interactive "p")
+  (if (region-active-p)
       (altcaps-region (region-beginning) (region-end))
     (altcaps-word num)))
 

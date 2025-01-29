@@ -1,4 +1,4 @@
-This is docfoRwxP.info, produced by makeinfo version 6.8 from
+This is doce0vwwf.info, produced by makeinfo version 6.8 from
 altcaps.texi.
 
 Copyright (C) 2022-2025 Free Software Foundation, Inc.
@@ -20,7 +20,7 @@ START-INFO-DIR-ENTRY
 END-INFO-DIR-ENTRY
 
 
-File: docfoRwxP.info,  Node: Top,  Next: Overview,  Up: (dir)
+File: doce0vwwf.info,  Node: Top,  Next: Overview,  Up: (dir)
 
 aLtCaPs: Apply alternating letter casing to convey sarcasm or mockery
 *********************************************************************
@@ -43,11 +43,11 @@ customization options for ‘altcaps’ (or ‘altcaps.el’), and provides
 every other piece of information pertinent to it.
 
    The documentation furnished herein corresponds to stable version
-1.2.0, released on 2023-09-22.  Any reference to a newer feature which
+1.3.0, released on 2025-01-28.  Any reference to a newer feature which
 does not yet form part of the latest tagged commit, is explicitly marked
 as such.
 
-   Current development target is 1.3.0-dev.
+   Current development target is 1.4.0-dev.
 
    • Package name (GNU ELPA): ‘altcaps’
    • Official manual: <https://protesilaos.com/emacs/altcaps>
@@ -83,7 +83,7 @@ Indices
 
 
 
-File: docfoRwxP.info,  Node: Overview,  Next: Installation,  Prev: Top,  Up: Top
+File: doce0vwwf.info,  Node: Overview,  Next: Installation,  Prev: Top,  Up: Top
 
 1 Overview
 **********
@@ -144,7 +144,7 @@ lowercase and ‘L’ uppercase, then we get this:
              ("l" . upcase)))
 
 
-File: docfoRwxP.info,  Node: Installation,  Next: Sample configuration,  Prev: Overview,  Up: Top
+File: doce0vwwf.info,  Node: Installation,  Next: Sample configuration,  Prev: Overview,  Up: Top
 
 2 Installation
 **************
@@ -155,7 +155,7 @@ File: docfoRwxP.info,  Node: Installation,  Next: Sample configuration,  Prev: O
 * Manual installation::
 
 
-File: docfoRwxP.info,  Node: GNU ELPA package,  Next: Manual installation,  Up: Installation
+File: doce0vwwf.info,  Node: GNU ELPA package,  Next: Manual installation,  Up: Installation
 
 2.1 GNU ELPA package
 ====================
@@ -174,7 +174,7 @@ archive.  Read:
 <https://protesilaos.com/codelog/2022-05-13-emacs-elpa-devel/>.
 
 
-File: docfoRwxP.info,  Node: Manual installation,  Prev: GNU ELPA package,  Up: Installation
+File: doce0vwwf.info,  Node: Manual installation,  Prev: GNU ELPA package,  Up: Installation
 
 2.2 Manual installation
 =======================
@@ -201,7 +201,7 @@ following commands in a shell prompt:
    Everything is in place to set up the package.
 
 
-File: docfoRwxP.info,  Node: Sample configuration,  Next: Acknowledgements,  Prev: Installation,  Up: Top
+File: doce0vwwf.info,  Node: Sample configuration,  Next: Acknowledgements,  Prev: Installation,  Up: Top
 
 3 Sample configuration
 **********************
@@ -222,8 +222,20 @@ File: docfoRwxP.info,  Node: Sample configuration,  Next: Acknowledgements,  Pre
      ;; - `altcaps-region'
      ;; - `altcaps-dwim'
 
+   With ‘use-package’:
+
+     (use-package altcaps
+       :ensure t
+       :bind
+       ("C-x C-a" . altcaps-dwim)
+       :config
+       ;; Optionally force letter casing for certain characters (for legibility).
+       (setq altcaps-force-character-casing
+           '(("i" . downcase)
+             ("l" . upcase))))
+
 
-File: docfoRwxP.info,  Node: Acknowledgements,  Next: GNU Free Documentation License,  Prev: Sample configuration,  Up: Top
+File: doce0vwwf.info,  Node: Acknowledgements,  Next: GNU Free Documentation License,  Prev: Sample configuration,  Up: Top
 
 4 Acknowledgements
 ******************
@@ -242,7 +254,7 @@ characters (I do it with the ‘altcaps-force-character-casing’ user
 option): <https://github.com/cbarrete/nvim-altcaps>.
 
 
-File: docfoRwxP.info,  Node: GNU Free Documentation License,  Next: Indices,  Prev: Acknowledgements,  Up: Top
+File: doce0vwwf.info,  Node: GNU Free Documentation License,  Next: Indices,  Prev: Acknowledgements,  Up: Top
 
 Appendix A GNU Free Documentation License
 *****************************************
@@ -724,7 +736,7 @@ software license, such as the GNU General Public License, to permit
 their use in free software.
 
 
-File: docfoRwxP.info,  Node: Indices,  Prev: GNU Free Documentation License,  Up: Top
+File: doce0vwwf.info,  Node: Indices,  Prev: GNU Free Documentation License,  Up: Top
 
 B Indices
 *********
@@ -736,7 +748,7 @@ B Indices
 * Concept index::
 
 
-File: docfoRwxP.info,  Node: Function index,  Next: Variable index,  Up: Indices
+File: doce0vwwf.info,  Node: Function index,  Next: Variable index,  Up: Indices
 
 B.1 Function index
 ==================
@@ -749,7 +761,7 @@ B.1 Function index
 * altcaps-word:                          Overview.             (line 20)
 
 
-File: docfoRwxP.info,  Node: Variable index,  Next: Concept index,  Prev: Function index,  Up: Indices
+File: doce0vwwf.info,  Node: Variable index,  Next: Concept index,  Prev: Function index,  Up: Indices
 
 B.2 Variable index
 ==================
@@ -760,7 +772,7 @@ B.2 Variable index
 * altcaps-force-character-casing:        Overview.             (line 38)
 
 
-File: docfoRwxP.info,  Node: Concept index,  Prev: Variable index,  Up: Indices
+File: doce0vwwf.info,  Node: Concept index,  Prev: Variable index,  Up: Indices
 
 B.3 Concept index
 =================
@@ -781,12 +793,12 @@ Node: Installation5140
 Node: GNU ELPA package5327
 Node: Manual installation5889
 Node: Sample configuration6662
-Node: Acknowledgements7255
-Node: GNU Free Documentation License7860
-Node: Indices33221
-Node: Function index33397
-Node: Variable index33761
-Node: Concept index34001
+Node: Acknowledgements7576
+Node: GNU Free Documentation License8181
+Node: Indices33542
+Node: Function index33718
+Node: Variable index34082
+Node: Concept index34322
 
 End Tag Table
 
