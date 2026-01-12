@@ -47,7 +47,7 @@ Table of Contents
 1 COPYING
 ═════════
 
-  Copyright (C) 2022-2025 Free Software Foundation, Inc.
+  Copyright (C) 2022-2026 Free Software Foundation, Inc.
 
         Permission is granted to copy, distribute and/or modify
         this document under the terms of the GNU Free
@@ -132,15 +132,12 @@ Table of Contents
   ┌────
   │ (setq altcaps-force-character-casing
   │       '(("i" . downcase)
-  │ 	("l" . upcase)))
+  │         ("l" . upcase)))
   └────
 
 
 3 Installation
 ══════════════
-
-
-
 
 3.1 GNU ELPA package
 ────────────────────
@@ -200,7 +197,7 @@ Table of Contents
   │ ;; Force letter casing for certain characters (for legibility).
   │ (setq altcaps-force-character-casing
   │       '(("i" . downcase)
-  │ 	("l" . upcase)))
+  │         ("l" . upcase)))
   │ 
   │ ;; We do not bind any keys, but you are free to do so:
   │ (define-key global-map (kbd "C-x C-a") #'altcaps-dwim)
@@ -223,7 +220,7 @@ Table of Contents
   │   ;; Optionally force letter casing for certain characters (for legibility).
   │   (setq altcaps-force-character-casing
   │       '(("i" . downcase)
-  │ 	("l" . upcase))))
+  │         ("l" . upcase))))
   └────
 
 
