@@ -1,0 +1,133 @@
+                        ━━━━━━━━━━━━━━━━━━━━━━━
+                         CHANGE LOG OF ALTCAPS
+                        ━━━━━━━━━━━━━━━━━━━━━━━
+
+
+This document contains the release notes for each tagged commit on the
+project's main git repository: <https://github.com/protesilaos/altcaps>.
+
+The newest release is at the top.  For further details, please consult
+the manual: <https://protesilaos.com/emacs/altcaps>.
+
+
+1.3.0 on 2025-01-28
+═══════════════════
+
+  This version does not include any user-facing changes. I made some
+  internal refinements and ensured everything works as expected. Just
+  use the sample configuration to get started:
+
+  ┌────
+  │ (use-package altcaps
+  │   :ensure t
+  │   :bind
+  │   ("C-x C-a" . altcaps-dwim)
+  │   :config
+  │   ;; Optionally force letter casing for certain characters (for legibility).
+  │   (setq altcaps-force-character-casing
+  │       '(("i" . downcase)
+  │         ("l" . upcase))))
+  └────
+
+
+1.2.0 on 2023-09-22
+═══════════════════
+
+Breaking change to the value of `altcaps-force-character-casing'
+────────────────────────────────────────────────────────────────
+
+  This user option enforces the specified letter casing for the given
+  character.  The value is an alist.  In previous versions, the `car' of
+  each cell was a character type, whereas now it is a string type.
+  Concretely, the old value was expressed like this:
+
+  ┌────
+  │ ;; Old value
+  │ (setq altcaps-force-character-casing
+  │       '((?i . downcase)
+  │         (?l . upcase)))
+  └────
+
+  It becomes:
+
+  ┌────
+  │ ;; New value
+  │ (setq altcaps-force-character-casing
+  │       '(("i" . downcase)
+  │         ("l" . upcase)))
+  └────
+
+  At least based on my correspondence, strings are easier for users.
+  The notation for characters causes confusion.
+
+
+The public `altcaps-transform' function
+───────────────────────────────────────
+
+  This is the function that performs the alternating letter casing,
+  while also respecting the user option
+  `altcaps-force-character-casing'.  The function is more efficient now.
+  Use it in Lisp with a single string argument, like this:
+
+  ┌────
+  │ (altcaps-transform "Your wish is my command")
+  │ ;; => yOuR wIsH iS mY cOmMaNd
+  └────
+
+  The above return value is consistent with the default settings.  With
+  `altcaps-force-character-casing' bound, we can affect the output thus:
+
+  ┌────
+  │ (setq altcaps-force-character-casing
+  │       '(("i" . downcase)
+  │         ("m" . upcase)))
+  │ 
+  │ (altcaps-transform "Your wish is my command")
+  │ ;; => yOuR wiSh iS My CoMMaNd
+  └────
+
+
+Characters without casing no longer matter
+──────────────────────────────────────────
+
+  Before, the algorithm was toggling the letter casing of virtually
+  every character.  This means that a string like `"a.c"' was wrongly
+  treated as a sequence of three characters with letter casing, so the
+  program was trying to do this:
+
+  ┌────
+  │ a => downcase
+  │ . => upcase
+  │ c => downcase
+  └────
+
+  Whereas now, the transformation skips characters without letter
+  casing:
+
+  ┌────
+  │ a => downcase
+  │ . => i Am ThE iNtElLiGeNtSiA nOw
+  │ c => upcase
+  └────
+
+
+The `altcaps-replace' is superseded by `altcaps-replace-region'
+───────────────────────────────────────────────────────────────
+
+  The `altcaps-replace' was not sufficiently abstract, making the code a
+  bit repetitive.  The new `altcaps-replace-region' is efficient in that
+  regard.
+
+  The arity of the two functions is different: `altcaps-replace' was
+  accepting one required argument plus an optional one, while
+  `altcaps-replace-region' takes three arguments at all times.  Please
+  consult its doc string before adapting it to your code.
+
+
+1.1.0 on 2022-11-28
+═══════════════════
+
+New user option
+───────────────
+
+  Introduced the user option `altcaps-force-character-casing'.  It …  …

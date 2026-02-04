@@ -31,11 +31,11 @@ Table of Contents
 ─────────────────
 
 1. COPYING
-2. Overview
-3. Installation
+2. Installation
 .. 1. GNU ELPA package
 .. 2. Manual installation
-4. Sample configuration
+3. Sample configuration
+4. Overview
 5. Acknowledgements
 6. GNU Free Documentation License
 7. Indices
@@ -62,7 +62,95 @@ Table of Contents
         copy and modify this GNU manual.”
 
 
-2 Overview
+2 Installation
+══════════════
+
+2.1 GNU ELPA package
+────────────────────
+
+  The package is available as `altcaps'.  Simply do:
+
+  ┌────
+  │ M-x package-refresh-contents
+  │ M-x package-install
+  └────
+
+
+  And search for it.
+
+  GNU ELPA provides the latest stable release.  Those who prefer to
+  follow the development process in order to report bugs or suggest
+  changes, can use the version of the package from the GNU-devel ELPA
+  archive.  Read:
+  <https://protesilaos.com/codelog/2022-05-13-emacs-elpa-devel/>.
+
+
+2.2 Manual installation
+───────────────────────
+
+  Assuming your Emacs files are found in `~/.emacs.d/', execute the
+  following commands in a shell prompt:
+
+  ┌────
+  │ cd ~/.emacs.d
+  │ 
+  │ # Create a directory for manually-installed packages
+  │ mkdir manual-packages
+  │ 
+  │ # Go to the new directory
+  │ cd manual-packages
+  │ 
+  │ # Clone this repo, naming it "altcaps"
+  │ git clone https://github.com/protesilaos/altcaps altcaps
+  └────
+
+  Finally, in your `init.el' (or equivalent) evaluate this:
+
+  ┌────
+  │ ;; Make Elisp files in that directory available to the user.
+  │ (add-to-list 'load-path "~/.emacs.d/manual-packages/altcaps")
+  └────
+
+  Everything is in place to set up the package.
+
+
+3 Sample configuration
+══════════════════════
+
+  ┌────
+  │ (require 'altcaps)
+  │ 
+  │ ;; Force letter casing for certain characters (for legibility).
+  │ (setq altcaps-force-character-casing
+  │       '(("i" . downcase)
+  │         ("l" . upcase)))
+  │ 
+  │ ;; We do not bind any keys, but you are free to do so:
+  │ (define-key global-map (kbd "C-x C-a") #'altcaps-dwim)
+  │ 
+  │ ;; The commands we provide:
+  │ ;;
+  │ ;; - `altcaps-word'
+  │ ;; - `altcaps-region'
+  │ ;; - `altcaps-dwim'
+  └────
+
+  With `use-package':
+
+  ┌────
+  │ (use-package altcaps
+  │   :ensure t
+  │   :bind
+  │   ("C-x C-a" . altcaps-dwim)
+  │   :config
+  │   ;; Optionally force letter casing for certain characters (for legibility).
+  │   (setq altcaps-force-character-casing
+  │       '(("i" . downcase)
+  │         ("l" . upcase))))
+  └────
+
+
+4 Overview
 ══════════
 
   Transform words to alternating letter casing in order to convey
@@ -135,93 +223,10 @@ Table of Contents
   │         ("l" . upcase)))
   └────
 
-
-3 Installation
-══════════════
-
-3.1 GNU ELPA package
-────────────────────
-
-  The package is available as `altcaps'.  Simply do:
-
-  ┌────
-  │ M-x package-refresh-contents
-  │ M-x package-install
-  └────
-
-
-  And search for it.
-
-  GNU ELPA provides the latest stable release.  Those who prefer to
-  follow the development process in order to report bugs or suggest
-  changes, can use the version of the package from the GNU-devel ELPA
-  archive.  Read:
-  <https://protesilaos.com/codelog/2022-05-13-emacs-elpa-devel/>.
-
-
-3.2 Manual installation
-───────────────────────
-
-  Assuming your Emacs files are found in `~/.emacs.d/', execute the
-  following commands in a shell prompt:
-
-  ┌────
-  │ cd ~/.emacs.d
-  │ 
-  │ # Create a directory for manually-installed packages
-  │ mkdir manual-packages
-  │ 
-  │ # Go to the new directory
-  │ cd manual-packages
-  │ 
-  │ # Clone this repo, naming it "altcaps"
-  │ git clone https://github.com/protesilaos/altcaps altcaps
-  └────
-
-  Finally, in your `init.el' (or equivalent) evaluate this:
-
-  ┌────
-  │ ;; Make Elisp files in that directory available to the user.
-  │ (add-to-list 'load-path "~/.emacs.d/manual-packages/altcaps")
-  └────
-
-  Everything is in place to set up the package.
-
-
-4 Sample configuration
-══════════════════════
-
-  ┌────
-  │ (require 'altcaps)
-  │ 
-  │ ;; Force letter casing for certain characters (for legibility).
-  │ (setq altcaps-force-character-casing
-  │       '(("i" . downcase)
-  │         ("l" . upcase)))
-  │ 
-  │ ;; We do not bind any keys, but you are free to do so:
-  │ (define-key global-map (kbd "C-x C-a") #'altcaps-dwim)
-  │ 
-  │ ;; The commands we provide:
-  │ ;;
-  │ ;; - `altcaps-word'
-  │ ;; - `altcaps-region'
-  │ ;; - `altcaps-dwim'
-  └────
-
-  With `use-package':
-
-  ┌────
-  │ (use-package altcaps
-  │   :ensure t
-  │   :bind
-  │   ("C-x C-a" . altcaps-dwim)
-  │   :config
-  │   ;; Optionally force letter casing for certain characters (for legibility).
-  │   (setq altcaps-force-character-casing
-  │       '(("i" . downcase)
-  │         ("l" . upcase))))
-  └────
+  The user option `altcaps-initial-case' controls which letter case
+  should come first while alternating betwen them. The value is the
+  symbol `downcase' or `upcase'. Any other value is the same as
+  `downcase'. [ The `altcaps-initial-case' is part of 1.4.0-dev. ]
 
 
 5 Acknowledgements
