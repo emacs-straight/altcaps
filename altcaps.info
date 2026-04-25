@@ -38,9 +38,9 @@ Copyright (C) 2022-2026 Free Software Foundation, Inc.
      (a) The FSF’s Back-Cover Text is: “You have the freedom to copy and
      modify this GNU manual.”
 
-   This manual, written by Protesilaos Stavrou, describes the
-customization options for ‘altcaps’ (or ‘altcaps.el’), and provides
-every other piece of information pertinent to it.
+   This manual, written by Protesilaos, describes the customization
+options for ‘altcaps’ (or ‘altcaps.el’), and provides every other piece
+of information pertinent to it.
 
    The documentation furnished herein corresponds to stable version
 1.3.0, released on 2025-01-28.  Any reference to a newer feature which
@@ -247,7 +247,7 @@ File: altcaps.info,  Node: Acknowledgements,  Next: GNU Free Documentation Licen
 aLtCaPs is meant to be a collective effort.  Every bit of help matters.
 
 Author/maintainer
-     Protesilaos Stavrou.
+     Protesilaos.
 
 Ideas and/or user feedback
      Cédric Barreteau.
@@ -792,17 +792,17 @@ B.3 Concept index
 
 Tag Table:
 Node: Top867
-Node: Installation2934
-Node: GNU ELPA package3114
-Node: Manual installation3674
-Node: Sample configuration4445
-Node: Overview5349
-Node: Acknowledgements7854
-Node: GNU Free Documentation License8445
-Node: Indices33603
-Node: Function index33777
-Node: Variable index34139
-Node: Concept index34450
+Node: Installation2926
+Node: GNU ELPA package3106
+Node: Manual installation3666
+Node: Sample configuration4437
+Node: Overview5341
+Node: Acknowledgements7846
+Node: GNU Free Documentation License8429
+Node: Indices33587
+Node: Function index33761
+Node: Variable index34123
+Node: Concept index34434
 
 End Tag Table
 
