@@ -1,2 +1,2 @@
 ;; Generated package description from altcaps.el  -*- no-byte-compile: t; lexical-binding:t -*-
-(define-package "altcaps" "1.3.0.0.20260424.102117" "Apply alternating letter casing to convey sarcasm or mockery" '((emacs "27.1")) :commit "7f232db0e123cbf06c9b3fccbaef28c3f493de41" :authors '(("Protesilaos" . "info@protesilaos.com")) :maintainer '("Protesilaos" . "info@protesilaos.com") :url "https://github.com/protesilaos/altcaps")
+(define-package "altcaps" "1.3.0.0.20260918.7" "Apply alternating letter casing to convey sarcasm or mockery" '((emacs "27.1")) :commit "54adb411c9e2d5767851bb8b70d34cc8cba0f77c" :authors '(("Protesilaos" . "info@protesilaos.com")) :maintainer '("Protesilaos" . "info@protesilaos.com") :url "https://github.com/protesilaos/altcaps")
